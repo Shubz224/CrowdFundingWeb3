@@ -85,7 +85,7 @@ export function CampaignDetails() {
                     <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
                         <div className="flex-[2] flex flex-col gap-[40px]">
                             <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-white
+                                <h4 className="font-epilogue font-semibold text-[18px] text-black
                                     uppercase">
                                     Creator
                                 </h4>
@@ -95,42 +95,42 @@ export function CampaignDetails() {
                                         <img src={thirdweb} alt="user" className="w-[60%] h-[60%] object-contain" />
                                     </div>
                                     <div>
-                                        <h4 className="font-epilogue font-semibold text-[14px] text-white break-all">{state.owner}</h4>
+                                        <h4 className="font-epilogue font-semibold text-[14px] text-black break-all">{state.owner}</h4>
                                         <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">10 Campaigns</p>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-white
+                                <h4 className="font-epilogue font-semibold text-[18px] text-black
                                     uppercase">
                                     Story
                                 </h4>
                                 <div className="mt-[20px]">
-                                    <p className="font-epilogue font-normal text-[16px] text-[#808191]
+                                    <p className="font-epilogue font-normal text-[16px] text-[black]
                                     leading-[26px] text-justify">
                                         {state.description}
                                     </p>
                                 </div>
                             </div>
                             <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-white
+                                <h4 className="font-epilogue font-semibold text-[18px] text-black
                                     uppercase">
                                     Donators
                                 </h4>
                                 <div className="mt-[20px] flex flex-col gap-4">
                                     {donators.length > 0 && donators.map((donator, index) => (
                                         <div key={`${donator.donator}-${donator.donation}-${index}`}>
-                                            <p className="font-epilogue font-normal text-[16px] text-[#b2b3bd]
+                                            <p className="font-epilogue font-normal text-[16px] text-black
                                             leading-[26px] break-all">
                                                 {index + 1}. {donator.donator}
                                             </p>
-                                            <p className="font-epilogue font-normal text-[16px] text-[#808191]
+                                            <p className="font-epilogue font-normal text-[16px] text-black
                                             leading-[26px] break-all">
                                                 {donator.donation}
                                             </p>
                                         </div>
                                     ))}
-                                    {donators.length === 0 && <p className="font-epilogue font-normal text-[16px] text-[#808191]
+                                    {donators.length === 0 && <p className="font-epilogue font-normal text-[16px] text-black
                                     leading-[26px] text-justify">
                                         No donators yet. Be the first one.
                                     </p>
@@ -143,7 +143,7 @@ export function CampaignDetails() {
                                     uppercase">
                                 Fund
                             </h4>
-                            <div className="mt-[20px] flex flex-col p-4 bg-[#1c1c24] rounded-[10px]">
+                            <div className="mt-[20px] flex flex-col p-4 bg-[#ECF1FF] rounded-[10px]">
                                 <p className="font-epilogue font-medium text-[20px] leading-[30px] text-center
                                     text-[#808191]
                                 ">
