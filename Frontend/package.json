@@ -9,11 +9,14 @@
     "deploy": "yarn build && npx thirdweb@latest upload dist"
   },
   "dependencies": {
+    "@react-firebase/auth": "^0.2.10",
     "@thirdweb-dev/react": "^4",
     "@thirdweb-dev/sdk": "^4",
     "ethers": "^5",
+    "firebase": "^11.4.0",
     "react": "^18.2",
     "react-dom": "^18.2",
+    "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^6.22.2",
     "sonner": "^1.4.3"
   },
