@@ -10,22 +10,35 @@ type ParsedCampaign = {
     deadline: number
     amountCollected: string
     image: string
+    status: string
     pId: string
+    rejectionReason?: string
 }
 
 export function Home() {
-
     const [isLoading, setIsLoading] = useState(false)
     const [campaigns, setCampaigns] = useState([] as ParsedCampaign[])
 
-    const { address, contract, getCampaigns, searchCampaign } = useContext(StateContext)
+    const { address, contract, getApprovedCampaigns, searchCampaign } = useContext(StateContext)
 
     async function fetchCampaigns() {
         setIsLoading(true)
-        const data = await getCampaigns()
-        const filteredData = data.filter((campaign) => campaign.title.toLowerCase().includes(searchCampaign.toLowerCase()))
-        setCampaigns(filteredData)
-        setIsLoading(false)
+        try {
+            // Only get approved campaigns for the home page
+            const data = await getApprovedCampaigns()
+            console.log("Approved campaigns:", data)
+            
+            // Filter by search term if provided
+            const filteredData = data.filter((campaign: ParsedCampaign) => 
+                campaign.title.toLowerCase().includes(searchCampaign.toLowerCase())
+            )
+            
+            setCampaigns(filteredData)
+        } catch (error) {
+            console.error("Error fetching campaigns:", error)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     useEffect(() => {
