@@ -16,26 +16,18 @@ export function FormField({
     handleChange
 }: FormFieldProps) {
     return (
-        <label className="flex-1 w-full flex flex-col">
-            {labelName && (
-                <span className="font-epilogue font-medium text-[14px]
-             leading-[22px] text-[#808191] mb-[10px]"
-                >
-                    {labelName}
-                </span>
-            )}
+        <label className="w-full space-y-2">
+            <span className="text-sm font-medium text-gray-700">
+                {labelName}
+            </span>
             {isTextArea ? (
                 <textarea
                     required
                     value={value}
                     onChange={handleChange}
-                    rows={10}
+                    rows={6}
                     placeholder={placeholder}
-                    className="py-[15px] sm:px-[15px] px-[15px]
-                outline-none border-[1px] border-[#3a3a43]
-                bg-transparent font-epilogue text-black text-[14px]
-                placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px]
-            "
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 />
             ) : (
                 <input
@@ -45,11 +37,7 @@ export function FormField({
                     type={inputType}
                     step="0.1"
                     placeholder={placeholder}
-                    className="py-[15px] sm:px-[15px] px-[15px]
-                    outline-none border-[1px] border-[#3a3a43]
-                    bg-transparent font-epilogue text-black text-[14px]
-                    placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px]
-                "
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 />
             )}
         </label>

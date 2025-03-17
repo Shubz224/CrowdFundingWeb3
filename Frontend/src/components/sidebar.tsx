@@ -6,39 +6,33 @@ import { navlinks } from "../constants"
 import { StateContext } from "../contexts"
 
 export function Sidebar() {
-
     const navigate = useNavigate()
     const [isActive, setIsActive] = useState('dashboard')
     const { disconnect } = useContext(StateContext)
 
     return (
-        <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
-            <Link to={"/"}>
-               <Icon styles="w-[52px] h-[52px] bg-white" imgUrl={logo} />
+        <aside className="fixed left-6 top-6 bottom-6 w-20 bg-white rounded-xl shadow-lg p-4 flex flex-col items-center">
+            <Link to="/" className="mb-8">
+                <Icon styles="w-12 h-12" imgUrl={logo} />
             </Link>
-            <div className="flex-1 flex flex-col justify-between items-center
-             bg-[#F1F3F4] rounded-[20px]
-              w-[76px] py-4 mt-12"
-            >
-                <div className="flex flex-col justify-center items-center gap-3">
-                    {navlinks.map((link) => (
-                        <Icon
-                            key={link.name}
-                            {...link}
-                            isActive={isActive}
-                            handleClick={() => {
-                                if (link.name === 'logout') {
-                                    disconnect()
-                                } else if (!link.disabled) {
-                                    setIsActive(link.name)
-                                    navigate(link.link)
-                                }
-                            }}
-                        />
-                    ))}
-                </div>
-                
+
+            <div className="flex-1 flex flex-col space-y-4">
+                {navlinks.map((link) => (
+                    <Icon
+                        key={link.name}
+                        {...link}
+                        isActive={isActive}
+                        handleClick={() => {
+                            if (link.name === 'logout') {
+                                disconnect()
+                            } else if (!link.disabled) {
+                                setIsActive(link.name)
+                                navigate(link.link)
+                            }
+                        }}
+                    />
+                ))}
             </div>
-        </div>
+        </aside>
     )
 }
