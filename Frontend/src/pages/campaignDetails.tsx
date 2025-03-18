@@ -143,7 +143,7 @@ export function CampaignDetails() {
                                     uppercase">
                                 Fund
                             </h4>
-                            <div className="mt-[20px] flex flex-col p-4 bg-[#ECF1FF] rounded-[10px]">
+                            <div className="mt-[20px] flex flex-col p-4 bg-black rounded-[10px]">
                                 <p className="font-epilogue font-medium text-[20px] leading-[30px] text-center
                                     text-[#808191]
                                 ">
