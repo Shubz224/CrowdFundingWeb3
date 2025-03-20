@@ -1,183 +1,110 @@
-import { useContext, useEffect, useState } from "react"
-import { Location, useLocation } from "react-router-dom"
-import { StateContext } from "../contexts"
-import { calculateBarPercentage, daysLeft } from "../utils"
-import { CountBox } from "../components/countBox"
-import { thirdweb } from "../assets"
-import { CustomButton } from "../components/customButton"
-import { Loader } from "../components/loader"
+import { useContext, useEffect, useState } from "react";
+import { Location, useLocation } from "react-router-dom";
+import { StateContext } from "../contexts";
+import { calculateBarPercentage, daysLeft } from "../utils";
+import { CountBox } from "../components/countBox";
+import { thirdweb } from "../assets";
+import { CustomButton } from "../components/customButton";
+import { Loader } from "../components/loader";
 
 type ParsedCampaign = {
-    owner: string
-    title: string
-    description: string
-    target: string
-    deadline: number
-    amountCollected: string
-    image: string
-    pId: string
-}
+    owner: string;
+    title: string;
+    description: string;
+    target: string;
+    deadline: number;
+    amountCollected: string;
+    image: string;
+    pId: string;
+};
 
 type ParsedDonation = {
-    donator: string
-    donation: string
-}
+    donator: string;
+    donation: string;
+};
 
 export function CampaignDetails() {
+    const { state } = useLocation() as Location<ParsedCampaign>;
+    const { donate, getDonations, contract, address } = useContext(StateContext);
 
-    const { state } = useLocation() as Location<ParsedCampaign>
-    const { donate, getDonations, contract, address } = useContext(StateContext)
+    const [isLoading, setIsLoading] = useState(false);
+    const [amount, setAmount] = useState("");
+    const [donators, setDonators] = useState<ParsedDonation[]>([]);
 
-    const [isLoading, setIsLoading] = useState(false)
-    const [amount, setAmount] = useState('')
-    const [donators, setDonators] = useState([] as ParsedDonation[])
-
-    const remainingDays = daysLeft(state.deadline)
+    const remainingDays = daysLeft(state.deadline);
 
     async function fetchDonators() {
-        const data = await getDonations(state.pId)
-
-        setDonators(data)
+        const data = await getDonations(state.pId);
+        setDonators(data);
     }
 
     useEffect(() => {
         if (contract) {
-            fetchDonators()
+            fetchDonators();
         }
-    }, [contract, address])
+    }, [contract, address]);
 
     async function handleDonate() {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-            await donate(state.pId, amount)
-            await fetchDonators()
-            setAmount('')
-            setIsLoading(false)
+            await donate(state.pId, amount);
+            await fetchDonators();
+            setAmount("");
         } catch (err) {
-            console.log(err)
-            setIsLoading(false)
+            console.log(err);
         }
+        setIsLoading(false);
     }
 
     return (
-        <div>
+        <div className="p-6 md:p-10 lg:p-16 bg-gray-100 min-h-screen">
             {isLoading && <Loader />}
-            {!isLoading && (
-                <>
-                    <div className="w-full flex md:flex-row flex-col mt-10 gap-[30px]">
-                        <div className="flex-1 flex-col">
-                            <img src={state.image} alt="campaign" className="w-full h-[410px] object-cover rounded-xl" />
-                            <div className="relative w-full h-[5px] bg-[#3a3a43] mt-2">
-                                <div className="absolute h-full bg-[#4acd8d]"
-                                    style={{
-                                        width: `${calculateBarPercentage(Number(state.target), Number(state.amountCollected))}%`,
-                                        maxWidth: '100%'
-                                    }} >
-                                </div>
-                            </div>
+            <div className="max-w-6xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex flex-col">
+                        <img src={state.image} alt="campaign" className="w-full h-[400px] object-cover rounded-lg shadow-lg" />
+                        <div className="relative w-full h-2 bg-gray-300 mt-4 rounded-full overflow-hidden">
+                            <div className="absolute h-full bg-green-500" style={{ width: `${calculateBarPercentage(Number(state.target), Number(state.amountCollected))}%` }}></div>
                         </div>
-                        <div className="flex md:w-[150px] w-full flex-wrap justify-between gap-[30px]">
+                    </div>
+                    <div className="space-y-6">
+                        <h2 className="text-2xl font-semibold text-gray-800">{state.title}</h2>
+                        <p className="text-gray-600">{state.description}</p>
+                        <div className="grid grid-cols-3 gap-4">
                             <CountBox title="Days Left" value={remainingDays} />
                             <CountBox title={`Raised of ${state.target}`} value={state.amountCollected} />
                             <CountBox title="Total Backers" value={donators.length} />
                         </div>
                     </div>
-                    <div className="mt-[60px] flex lg:flex-row flex-col gap-5">
-                        <div className="flex-[2] flex flex-col gap-[40px]">
-                            <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-black
-                                    uppercase">
-                                    Creator
-                                </h4>
-                                <div className="mt-[20px] flex flex-row items-center flex-wrap gap-[14px]">
-                                    <div className="w-[52px] h-[52px] flex items-center justify-center rounded-full
-                                    bg-[#2c2f32] cursor-pointer">
-                                        <img src={thirdweb} alt="user" className="w-[60%] h-[60%] object-contain" />
+                </div>
+
+                <div className="mt-10 grid md:grid-cols-2 gap-10">
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 className="text-lg font-semibold text-gray-800">Donators</h4>
+                        <div className="mt-4 space-y-2">
+                            {donators.length > 0 ? (
+                                donators.map((donator, index) => (
+                                    <div key={`${donator.donator}-${donator.donation}-${index}`} className="border-b pb-2">
+                                        <p className="text-gray-700 font-medium">{index + 1}. {donator.donator}</p>
+                                        <p className="text-sm text-gray-500">{donator.donation} ETH</p>
                                     </div>
-                                    <div>
-                                        <h4 className="font-epilogue font-semibold text-[14px] text-black break-all">{state.owner}</h4>
-                                        <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">10 Campaigns</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-black
-                                    uppercase">
-                                    Story
-                                </h4>
-                                <div className="mt-[20px]">
-                                    <p className="font-epilogue font-normal text-[16px] text-[black]
-                                    leading-[26px] text-justify">
-                                        {state.description}
-                                    </p>
-                                </div>
-                            </div>
-                            <div>
-                                <h4 className="font-epilogue font-semibold text-[18px] text-black
-                                    uppercase">
-                                    Donators
-                                </h4>
-                                <div className="mt-[20px] flex flex-col gap-4">
-                                    {donators.length > 0 && donators.map((donator, index) => (
-                                        <div key={`${donator.donator}-${donator.donation}-${index}`}>
-                                            <p className="font-epilogue font-normal text-[16px] text-black
-                                            leading-[26px] break-all">
-                                                {index + 1}. {donator.donator}
-                                            </p>
-                                            <p className="font-epilogue font-normal text-[16px] text-black
-                                            leading-[26px] break-all">
-                                                {donator.donation}
-                                            </p>
-                                        </div>
-                                    ))}
-                                    {donators.length === 0 && <p className="font-epilogue font-normal text-[16px] text-black
-                                    leading-[26px] text-justify">
-                                        No donators yet. Be the first one.
-                                    </p>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex-1">
-                            <h4 className="font-epilogue font-semibold text-[18px] text-white
-                                    uppercase">
-                                Fund
-                            </h4>
-                            <div className="mt-[20px] flex flex-col p-4 bg-black rounded-[10px]">
-                                <p className="font-epilogue font-medium text-[20px] leading-[30px] text-center
-                                    text-[#808191]
-                                ">
-                                    Fund the campaign
-                                </p>
-                                <div className="mt-[30px]">
-                                    <input type="number" placeholder="ETH 0.1" step="0.01" className="w-full
-                                    py-[10px] sm:px-[20px] px-[15px] outline-none border-[1px] border-[#3a3a43]
-                                     bg-transparent font-epilogue text-white text-[18px] leading-[30px]
-                                     placeholder:text-[#4b5264] rounded-[10px]"
-                                        value={amount}
-                                        onChange={(e) => setAmount(e.target.value)}
-                                    />
-                                    <div className="my-[20px] p-4 bg-[#13131a] rounded-[10px]">
-                                        <h4 className="font-epilogue font-semibold text-[14px] leading-[22px] text-white">
-                                            Back it because you believe in it.
-                                        </h4>
-                                        <p className="mt-[20px] font-epilogue font-normal leading-[22px] text-[#808191]">
-                                            Support the project for no reward, just because it speaks to you.
-                                        </p>
-                                    </div>
-                                    <CustomButton
-                                        btnType="button"
-                                        title="Fund Campaign"
-                                        styles="w-full bg-[#8c6dfd]"
-                                        handleClick={handleDonate}
-                                        disabled={isLoading}
-                                    />
-                                </div>
-                            </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-500">No donators yet. Be the first one.</p>
+                            )}
                         </div>
                     </div>
-                </>
-            )}
-        </div >
-    )
+
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 className="text-lg font-semibold text-gray-800">Fund this Campaign</h4>
+                        <p className="text-sm text-gray-600 mt-2">Support this project because it speaks to you.</p>
+                        <div className="mt-4">
+                            <input type="number" placeholder="ETH 0.1" step="0.01" className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring focus:ring-green-300" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                            <CustomButton btnType="button" title="Fund Campaign" styles="w-full bg-green-500 text-white mt-4 py-2 rounded-lg" handleClick={handleDonate} disabled={isLoading} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
