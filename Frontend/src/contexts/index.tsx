@@ -1,7 +1,6 @@
 import { SmartContract, useAddress, useConnect, useContract, useContractWrite, useDisconnect } from "@thirdweb-dev/react";
 import { BaseContract, BigNumber, ethers } from "ethers";
 import { ReactNode, SetStateAction, createContext, useEffect, useState } from "react";
-
 // Define campaign status enum to match contract
 enum CampaignStatus {
   Pending = 0,
@@ -9,19 +8,6 @@ enum CampaignStatus {
   Rejected = 2
 }
 
-type CampaignThirdweb = {
-    owner: string
-    title: string
-    description: string
-    target: BigNumber
-    deadline: BigNumber
-    amountCollected: BigNumber
-    image: string
-    donators: string[]
-    donations: BigNumber[]
-    status: BigNumber
-    rejectionReason: string
-}
 
 type ParsedCampaign = {
     owner: string
@@ -77,7 +63,7 @@ type CampaignForm = {
 }
 
 export function StateContextProvider({ children }: StateContextProviderProps) {
-    const { contract } = useContract(import.meta.env.VITE_CONTRACT_ADDRESS)
+    const { contract } = useContract("0x019f55905515e0c9cc4b34ab926028d881c1a31a")
 
 
     const { mutateAsync: createCampaign } = useContractWrite(contract, 'createCampaign')
