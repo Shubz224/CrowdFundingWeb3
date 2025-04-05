@@ -10,7 +10,7 @@ import { StateContextProvider } from './contexts'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-    <ThirdwebProvider activeChain={ArbitrumSepolia} clientId={"1b375590eca360b28c55ce2bdf51b0f9"}>
+    <ThirdwebProvider activeChain={ArbitrumSepolia} clientId={import.meta.env.VITE_THIRDWEB_CLIENT_ID}>
         <Router>
             <StateContextProvider>
 

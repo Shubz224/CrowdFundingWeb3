@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react"
 import { DisplayCampaigns } from "../components/displayCampaigns"
 import { StateContext } from "../contexts"
 
+// Updated ParsedCampaign type to include the status property
 type ParsedCampaign = {
     owner: string
     title: string
@@ -11,6 +12,7 @@ type ParsedCampaign = {
     amountCollected: string
     image: string
     pId: string
+    status: string  // Added the missing status property
 }
 
 export function Profile() {
@@ -22,6 +24,7 @@ export function Profile() {
     async function fetchCampaigns() {
         setIsLoading(true)
         const data = await getUserCampaigns()
+        // Make sure the data from getUserCampaigns includes the status property
         const filteredData = data.filter((campaign) => campaign.title.toLowerCase().includes(searchCampaign.toLowerCase()))
         setCampaigns(filteredData)
         setIsLoading(false)

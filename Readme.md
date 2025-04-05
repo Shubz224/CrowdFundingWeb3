@@ -1,6 +1,6 @@
 # Crowdfunding Using Blockchain
 
-![Crowdfunding Project Screenshot](/assets/Screenshot%20(172).png)
+![Crowdfunding Project Screenshot](/assets/Screenshot%20From%202025-04-05%2014-25-40.png)
 
 ## Introduction
 Crowdfunding platforms are essential tools for raising funds, but traditional systems often lack transparency and incur high fees. Our **Crowdfunding Using Blockchain** project leverages the transparency, immutability, and decentralized nature of blockchain to create a secure, low-fee platform for campaign management. Built with React, Solidity, Hardhat, and thirdweb SDK, this platform enables users to create campaigns, contribute to causes, and manage funds in a trustless environment.

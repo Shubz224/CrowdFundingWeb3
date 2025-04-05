@@ -1,4 +1,4 @@
-import { tagType, thirdweb } from "../assets"
+import { thirdweb } from "../assets"
 import { daysLeft } from "../utils"
 
 type ParsedCampaign = {

@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { FormField } from "../components/formField"
-import { loader } from "../assets"
 import { CustomButton } from "../components/customButton"
 import { ethers } from "ethers"
 import { checkIfImage } from "../utils"

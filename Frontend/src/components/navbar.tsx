@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { logo, menu, search, thirdweb } from "../assets"
+import { menu, search, thirdweb } from "../assets"
 import { CustomButton } from "./customButton"
 import { navlinks } from "../constants"
 import { StateContext } from "../contexts"

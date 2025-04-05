@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import { loader } from "../assets"
-import { FundCard } from "./fundCard"
 import { calculateBarPercentage, daysLeft } from "../utils"
 
 
@@ -15,6 +13,7 @@ type ParsedCampaign = {
     pId: string
     status: string
     rejectionReason?: string
+    donators?:string
 }
 
 type DisplayCampaignsProps = {

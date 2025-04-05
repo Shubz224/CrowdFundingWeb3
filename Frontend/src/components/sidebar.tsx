@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { SidebarIcon as Icon } from "./sidebarIcon"
-import { logo, sun } from "../assets"
+import { logo} from "../assets"
 import { navlinks } from "../constants"
 import { StateContext } from "../contexts"
 

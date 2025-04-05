@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { StateContext } from "../contexts";
 import { Loader } from "../components/loader";
-import { ethers } from "ethers";
+import { StateContext } from "../contexts";
+
 
 export function AdminDashboard() {
   const {
@@ -10,8 +10,7 @@ export function AdminDashboard() {
     approveCampaign,
     rejectCampaign,
     refreshCampaigns, // Use the new refreshCampaigns function
-    contract,
-    address
+    contract
   } = useContext(StateContext);
 
   const [campaigns, setCampaigns] = useState<any[]>([]);
@@ -217,20 +216,26 @@ export function AdminDashboard() {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {allCampaigns.map((campaign) => {
-                  const statusCode = parseInt(campaign.status);
-                  const statusConfig = {
+                  // Fix: Ensure statusCode is typed as 0, 1, or 2
+                  const statusCode = parseInt(campaign.status) as 0 | 1 | 2;
+                  
+                  // Define statusConfig with appropriate typing
+                  const statusConfig: Record<0 | 1 | 2, { text: string; color: string }> = {
                     0: { text: "Pending", color: "bg-yellow-100 text-yellow-800" },
                     1: { text: "Approved", color: "bg-green-100 text-green-800" },
                     2: { text: "Rejected", color: "bg-red-100 text-red-800" }
                   };
+
+                  // Fallback for safety in case the status is somehow out of range
+                  const status = statusConfig[statusCode] || { text: "Unknown", color: "bg-gray-100 text-gray-800" };
 
                   return (
                     <tr key={campaign.pId} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600">#{campaign.pId}</td>
                       <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{campaign.title}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig[statusCode].color}`}>
-                          {statusConfig[statusCode].text}
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
+                          {status.text}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500 font-mono">{campaign.owner.substring(0, 10)}...</td>

@@ -3,7 +3,6 @@ import { Location, useLocation } from "react-router-dom";
 import { StateContext } from "../contexts";
 import { calculateBarPercentage, daysLeft } from "../utils";
 import { CountBox } from "../components/countBox";
-import { thirdweb } from "../assets";
 import { CustomButton } from "../components/customButton";
 import { Loader } from "../components/loader";
 
