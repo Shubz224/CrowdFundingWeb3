@@ -1,30 +1,65 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/home";
+import { LandingPage } from "./pages/landing";
 import { Sidebar } from "./components/sidebar";
 import { Navbar } from "./components/navbar";
 import { CreateCampaign } from "./pages/createCampaign";
 import { Profile } from "./pages/profile";
 import { CampaignDetails } from "./pages/campaignDetails";
 import { AdminDashboard } from "./pages/admin";
+import { HeroSection } from "./components/HeroSection";
+
+
+
+const AppLayout = ({ children } :any) => {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Sidebar/>
+      <Navbar/>
+      <div className="">
+        
+          {children}
+      </div>
+    </div>
+  );
+};
 
 export const App = () => {
   return (
-    <div className="relative sm:-8 p-4 bg-[#FFFFFF] min-h-screen flex flex-row">
-      <div className="sm:flex hidden mr-10 relative">
-        <Sidebar />
-      </div>
-      <div className="flex-1 max-sm:w-full max-w-[1280px] mx-auto sm:pr-5">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/create-campaign" element={
-            <CreateCampaign />} />
-
-          <Route path="/campaign-details/:id" element={<CampaignDetails />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </div>
-    </div>
+    <Routes>
+      {/* Landing page without any layout */}
+      <Route path="/" element={<LandingPage />} />
+      
+      {/* All other routes with top navbar only */}
+      <Route path="/home" element={
+        <AppLayout>
+          <Home />
+        </AppLayout>
+      } />
+      
+      <Route path="/profile" element={
+        <AppLayout>
+          <Profile />
+        </AppLayout>
+      } />
+      
+      <Route path="/create-campaign" element={
+        <AppLayout>
+          <CreateCampaign />
+        </AppLayout>
+      } />
+      
+      <Route path="/campaign-details/:id" element={
+        <AppLayout>
+          <CampaignDetails />
+        </AppLayout>
+      } />
+      
+      <Route path="/admin" element={
+        <AppLayout>
+          <AdminDashboard />
+        </AppLayout>
+      } />
+    </Routes>
   );
 };
