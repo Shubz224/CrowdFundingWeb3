@@ -13,9 +13,7 @@ root.render(
     <ThirdwebProvider activeChain={ArbitrumSepolia} clientId={import.meta.env.VITE_THIRDWEB_CLIENT_ID}>
         <Router>
             <StateContextProvider>
-
                 <App />
-
 
             </StateContextProvider>
         </Router>

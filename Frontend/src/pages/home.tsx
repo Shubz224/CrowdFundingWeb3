@@ -28,10 +28,16 @@ export function Home() {
             const data = await getApprovedCampaigns()
             console.log("Approved campaigns:", data)
             
-            // Filter by search term if provided
-            const filteredData = data.filter((campaign: ParsedCampaign) => 
-                campaign.title.toLowerCase().includes(searchCampaign.toLowerCase())
-            )
+            // Get current timestamp in seconds
+            const currentTimestamp = Math.floor(Date.now() / 1000)
+            
+            // Filter campaigns by search term and exclude expired campaigns
+            const filteredData = data.filter((campaign: ParsedCampaign) => {
+                const matchesSearch = campaign.title.toLowerCase().includes(searchCampaign.toLowerCase())
+                const isNotExpired = campaign.deadline > currentTimestamp
+                
+                return matchesSearch && isNotExpired
+            })
             
             setCampaigns(filteredData)
         } catch (error) {

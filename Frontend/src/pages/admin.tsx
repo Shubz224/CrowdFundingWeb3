@@ -204,46 +204,60 @@ export function AdminDashboard() {
       {allCampaigns.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">All Campaigns Overview</h2>
-          <div className="overflow-x-auto rounded-lg border border-gray-100">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Owner</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {allCampaigns.map((campaign) => {
-                  // Fix: Ensure statusCode is typed as 0, 1, or 2
-                  const statusCode = parseInt(campaign.status) as 0 | 1 | 2;
-                  
-                  // Define statusConfig with appropriate typing
-                  const statusConfig: Record<0 | 1 | 2, { text: string; color: string }> = {
-                    0: { text: "Pending", color: "bg-yellow-100 text-yellow-800" },
-                    1: { text: "Approved", color: "bg-green-100 text-green-800" },
-                    2: { text: "Rejected", color: "bg-red-100 text-red-800" }
-                  };
+          {/* Added fixed height container with overflow-y-auto for vertical scrolling */}
+          <div className="overflow-x-auto rounded-lg border border-gray-100 shadow-sm">
+            <div className="max-h-96 overflow-y-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50 sticky top-0 z-10">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Owner</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {allCampaigns.map((campaign) => {
+                    // Fix: Ensure statusCode is typed as 0, 1, or 2
+                    const statusCode = parseInt(campaign.status) as 0 | 1 | 2;
+                    
+                    // Define statusConfig with appropriate typing
+                    const statusConfig: Record<0 | 1 | 2, { text: string; color: string }> = {
+                      0: { text: "Pending", color: "bg-yellow-100 text-yellow-800" },
+                      1: { text: "Approved", color: "bg-green-100 text-green-800" },
+                      2: { text: "Rejected", color: "bg-red-100 text-red-800" }
+                    };
 
-                  // Fallback for safety in case the status is somehow out of range
-                  const status = statusConfig[statusCode] || { text: "Unknown", color: "bg-gray-100 text-gray-800" };
+                    // Fallback for safety in case the status is somehow out of range
+                    const status = statusConfig[statusCode] || { text: "Unknown", color: "bg-gray-100 text-gray-800" };
 
-                  return (
-                    <tr key={campaign.pId} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600">#{campaign.pId}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{campaign.title}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
-                          {status.text}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-500 font-mono">{campaign.owner.substring(0, 10)}...</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                    return (
+                      <tr key={campaign.pId} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600">#{campaign.pId}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{campaign.title}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
+                            {status.text}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-500 font-mono">{campaign.owner.substring(0, 10)}...</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {/* Added subtle indication that table is scrollable */}
+            {allCampaigns.length > 6 && (
+              <div className="text-center py-2 text-sm text-gray-500 border-t border-gray-100 bg-gray-50">
+                <span className="flex items-center justify-center">
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Scroll for more campaigns
+                </span>
+              </div>
+            )}
           </div>
         </div>
       )}
